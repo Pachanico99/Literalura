@@ -106,35 +106,7 @@ public class Main {
                             -0 Exit""");
                         opcion = keyboardInput.nextInt();
                         keyboardInput.nextLine();
-                        switch (opcion){
-                            case 1:
-                                showPercentageOfBooksByLanguage();
-                                break;
-                            case 2:
-                                showPercentageOfBooksByAuthorName();
-                                break;
-                            case 3:
-                                showMaxDownloadByAuthor();
-                                break;
-                            case 4:
-
-                                break;
-                            case 5:
-                                System.out.println(statistics.getAverage());
-                                break;
-                            case 6:
-                                System.out.println(statistics.getMax());
-                                break;
-                            case 7:
-                                System.out.println(statistics.getMin());
-                                break;
-                            case 8:
-                                System.out.println(statistics.getSum());
-                                break;
-                            case 0:
-                                System.out.println("Salio del modo estadistico");
-                                break;
-                        }
+                        menuOptions(opcion, statistics);
                     }
                     break;
 
@@ -146,6 +118,38 @@ public class Main {
                     break;
             }
 
+        }
+    }
+
+    private void menuOptions(int option, DoubleSummaryStatistics statistics) {
+        switch (option){
+            case 1:
+                showPercentageOfBooksByLanguage();
+                break;
+            case 2:
+                showPercentageOfBooksByAuthorName();
+                break;
+            case 3:
+                showMaxDownloadByAuthor();
+                break;
+            case 4:
+
+                break;
+            case 5:
+                System.out.println(statistics.getAverage());
+                break;
+            case 6:
+                System.out.println(statistics.getMax());
+                break;
+            case 7:
+                System.out.println(statistics.getMin());
+                break;
+            case 8:
+                System.out.println(statistics.getSum());
+                break;
+            case 0:
+                System.out.println("Exit statistic menu");
+                break;
         }
     }
 
