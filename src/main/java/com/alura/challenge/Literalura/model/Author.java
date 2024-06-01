@@ -9,18 +9,17 @@ import java.util.List;
 public class Author {
     @Id
     @Column(name = "author_id")
-
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
     private String name;
 
-    @Column
-    private int deadYear;
+    @Column(nullable = true)
+    private Integer deadYear;
 
-    @Column
-    private int bornYear;
+    @Column(nullable = true)
+    private Integer bornYear;
 
     @ManyToMany(mappedBy = "authors")
     private List<Book> books;
@@ -35,12 +34,9 @@ public class Author {
 
     @Override
     public String toString() {
-        return "Author{" + "\n" +
-                "id=" + id + "\n" +
-                ", name='" + name + '\'' + "\n" +
-                ", deadYear=" + deadYear + "\n" +
-                ", bornYear=" + bornYear + "\n" +
-                '}';
+        return  "name: " + name + "\n" +
+                "deadYear: " + (deadYear == null? "Unknown" : deadYear) + "\n" +
+                "bornYear: " + (bornYear == null? "Unknown" : bornYear) + "\n";
     }
 
     public Long getId() {

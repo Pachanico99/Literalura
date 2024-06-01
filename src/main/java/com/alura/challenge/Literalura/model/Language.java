@@ -11,7 +11,7 @@ public class Language {
     @Column(name = "language_id")
     private String languageCode;
 
-    @ManyToMany(mappedBy = "languages")
+    @ManyToMany(mappedBy = "languages", cascade = CascadeType.ALL)
     private List<Book> books;
 
     public Language() {}
@@ -22,9 +22,7 @@ public class Language {
 
     @Override
     public String toString() {
-        return "Language{" + "\n" +
-                "lenguajeCode='" + languageCode + '\'' + "\n" +
-                '}';
+        return "LenguajeCode: " + languageCode + "\n";
     }
 
     public String getLanguageCode() {

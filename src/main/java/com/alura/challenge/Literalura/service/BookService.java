@@ -1,16 +1,16 @@
 package com.alura.challenge.Literalura.service;
 
+import com.alura.challenge.Literalura.controller.LanguageController;
+import com.alura.challenge.Literalura.model.Author;
 import com.alura.challenge.Literalura.model.Book;
 import com.alura.challenge.Literalura.repository.AuthorRepository;
 import com.alura.challenge.Literalura.repository.BookRepository;
-import com.alura.challenge.Literalura.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -22,33 +22,70 @@ public class BookService {
     private AuthorRepository authorRepository;
 
     @Autowired
-    private LanguageRepository languageRepository;
+    private LanguageController languageController;
 
     @Transactional
-    public void saveBookIfNotExists(Book book) {
-        // Verifica si el libro ya existe por título
-        Optional<Book> existingBook = Optional.ofNullable(bookRepository.getBookByTitle(book.getTitle()));
-        if (!existingBook.isPresent()) {
-            // Guarda y recupera los autores desde la base de datos
-            book.getAuthors().forEach(author -> authorRepository.saveIfNotExist(author));
+    public void saveBook(Book book) {
+        Optional<Book> bookInDB = bookRepository.getBookByTitle(book.getTitle());
+        if (!bookInDB.isPresent()){
+            book.getAuthors().forEach(a -> {
+                Optional<Author> authorInDB = authorRepository.getAuthorByName(a.getName());
+                if(!authorInDB.isPresent()){
+                    authorRepository.save(a);
+                }else{
+                    a.setId(authorInDB.get().getId());
+                }
+            });
 
-            // Guarda y recupera los lenguajes desde la base de datos
-            book.getLanguages().forEach(language -> languageRepository.saveIfNotExist(language));
+            book.getLanguages().forEach(l -> languageController.saveIfNotExist(l));
 
-            // Guarda el libro
             bookRepository.save(book);
+        }else{
+            System.out.println("The book [ " + book.getTitle() + " ] already exists in DB");
         }
     }
 
-    public List<Book> getAllBooks() {
+    public Book findBookByTitle(String title) {
+        Optional<Book> bookInDB = bookRepository.getBookByTitle(title);
+        return bookInDB.orElse(null);
+    }
+
+    public List<Book> getAllBooks(){
         return bookRepository.getAllBooks();
     }
 
-    public Book getBookById(Long id) {
-        return bookRepository.findById(id).orElse(null);
+    public List<Book> getBooksByLanguage(String languageCode){
+        Optional<List<Book>> bookInDB = bookRepository.getBooksByLanguage(languageCode);
+        return bookInDB.orElse(null);
     }
 
-    public Optional<Book> getBookByTitle(String title) {
-        return Optional.ofNullable(bookRepository.getBookByTitle(title));
+    public Book getBookMoreDownloaded(){
+        Optional<Book> bookInDB = bookRepository.getBookMoreDownloaded();
+        return bookInDB.orElse(null);
+    }
+
+    public List<Book> getTop10BooksDownloaded(){
+        return bookRepository.getTop10BooksDownloaded();
+    }
+
+    public List<Book> getBooksByAuthorName(String authorName) {
+        Optional<List<Book>> booksInDB = bookRepository.getBooksByAuthorName(authorName);
+        return booksInDB.orElse(null);
+    }
+
+    public Double percentageByLanguage(String languageCode){
+        return bookRepository.percentageBooksByLanguage(languageCode);
+    }
+
+    public Double percentageBooksByAuthorName(String name) {
+        return bookRepository.percentageBooksByAuthorName(name);
+    }
+
+    public String getAuthorWithMoreDownload(){
+        return bookRepository.getAuthorWithMoreDownload();
+    }
+
+    public Integer getMaxDownloadByAuthor(){
+        return bookRepository.getMaxDownloadByAuthor();
     }
 }

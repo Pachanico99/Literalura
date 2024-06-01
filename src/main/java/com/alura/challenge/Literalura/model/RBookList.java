@@ -7,6 +7,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record RBookList(
+        @JsonAlias("next") String nextURL,
         @JsonAlias("results") List<RBook> books
 ) {
 }

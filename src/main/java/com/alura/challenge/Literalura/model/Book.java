@@ -1,6 +1,7 @@
 package com.alura.challenge.Literalura.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,14 +17,14 @@ public class Book {
     @Column(unique = true)
     private String title;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "books_has_authors",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "books_has_languages",
             joinColumns = @JoinColumn(name = "book_id"),
@@ -35,6 +36,13 @@ public class Book {
 
     public Book() {}
 
+    public Book(String title, List<Author> authors, List<Language> languages, Integer downloadCount) {
+        this.title = title;
+        this.authors = authors;
+        this.languages = languages;
+        this.downloadCount = downloadCount;
+    }
+
     public Book(RBook rBook) {
         this.authors = rBook.authors().stream().map(Author::new).collect(Collectors.toList());
         this.downloadCount = rBook.downloadCount();
@@ -44,13 +52,13 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" + "\n" +
-                "id=" + id + "\n" +
-                ", title='" + title + '\'' + "\n" +
-                ", authors=" + authors + "\n" +
-                ", languages=" + languages + "\n" +
-                ", downloadCount=" + downloadCount + "\n" +
-                '}';
+        return  "********************************************\n" +
+                "Book:\n"+
+                "Title: " + title + " \n" +
+                "Authors:\n " + authors + " \n" +
+                "Languages:\n " + languages + " \n" +
+                "Download count:\n " + downloadCount + " \n" +
+                "********************************************";
     }
 
     public Long getId() {
