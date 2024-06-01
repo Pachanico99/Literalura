@@ -109,7 +109,6 @@ public class Main {
                         menuOptions(opcion, statistics);
                     }
                     break;
-
                 case 0:
                     System.out.println("Thanks for using literalura: ");
                     break;
@@ -133,18 +132,15 @@ public class Main {
                 showMaxDownloadByAuthor();
                 break;
             case 4:
-
-                break;
-            case 5:
                 System.out.println(statistics.getAverage());
                 break;
-            case 6:
+            case 5:
                 System.out.println(statistics.getMax());
                 break;
-            case 7:
+            case 6:
                 System.out.println(statistics.getMin());
                 break;
-            case 8:
+            case 7:
                 System.out.println(statistics.getSum());
                 break;
             case 0:
