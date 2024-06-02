@@ -45,9 +45,9 @@ public class Main {
                         -8 Book more downloaded
                         -9 Top 10 Books
                         -10 Find book by title
-                        -11 Find book by authors
+                        -11 Find authors by name
                         -12 List books by author
-                        -13 consult fist 5 pages of books
+                        -13 statistic Menu
                        \s
                         -0 Exit""");
             opcion = keyboardInput.nextInt();
@@ -106,7 +106,7 @@ public class Main {
                             -0 Exit""");
                         opcion = keyboardInput.nextInt();
                         keyboardInput.nextLine();
-                        menuOptions(opcion, statistics);
+                        menuOptionsStatistics(opcion, statistics);
                     }
                     break;
                 case 0:
@@ -120,7 +120,7 @@ public class Main {
         }
     }
 
-    private void menuOptions(int option, DoubleSummaryStatistics statistics) {
+    private void menuOptionsStatistics(int option, DoubleSummaryStatistics statistics) {
         switch (option){
             case 1:
                 showPercentageOfBooksByLanguage();
